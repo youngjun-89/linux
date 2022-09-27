@@ -653,6 +653,11 @@ config SG_POOL
 # sg chaining option
 #
 
+config STACK_CTX
+	def_bool y
+	help
+	 Provide stack context for tracing.
+
 config ARCH_NO_SG_CHAIN
 	def_bool n
 
