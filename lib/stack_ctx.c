@@ -81,30 +81,30 @@ void stack_ctx_destroy(stack_ctx_handle_t handle)
 	stack_ctx_put((struct stack_ctx_desc *)handle);
 }
 
-void *stack_ctx_find(struct task_struct *tsk, stack_ctx_handle_t handle)
+void *stack_ctx_find(stack_ctx_handle_t handle)
 {	
 	struct stack_ctx_hdr *hdr;
 	struct stack_ctx_desc *desc = (struct stack_ctx_desc *)handle;
 
-	if (tsk->stack_ctx_end == NULL)
+	if (current->stack_ctx_end == NULL)
 		return NULL;
 	
-	hdr = (struct stack_ctx_hdr *)tsk->stack;
+	hdr = (struct stack_ctx_hdr *)current->stack;
 	do {
 		if (hdr->handle == desc && hdr->size == desc->size)
 			return (void *)((char *)hdr + sizeof(*hdr));
 		hdr = (struct stack_ctx_hdr *)((char *)hdr + sizeof(*hdr) + hdr->size);
-	} while ((void *)hdr < tsk->stack_ctx_end);
+	} while ((void *)hdr < current->stack_ctx_end);
 
 	return NULL;
 }
 
 /* entry handler calls it */
-void stack_ctx_reserve(void *stack)
+void stack_ctx_reserve(void)
 {
 	struct stack_ctx_desc *desc;
 	struct stack_ctx_hdr hdr;
-
+	void *stack = current->stack;
 	/* TODO */
 // config option
 	// arch_stack_reserve(stack);
