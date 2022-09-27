@@ -3,7 +3,7 @@
 #include <linux/spinlock.h>
 #include <linux/types.h>
 #include <linux/sched.h>
-#include "stack_ctx.h"
+#include <linux/stack_ctx.h>
 
 #define STACK_CTX_SIZE 	1024 * 4
 
